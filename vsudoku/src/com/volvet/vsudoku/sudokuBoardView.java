@@ -18,6 +18,7 @@ public class sudokuBoardView extends View {
 	float   mGridLength;
 	int     mSectorLineWidth;
 	Paint   mLinePaint;
+	Paint   mSectorLinePaint;
 	
 	
 	public sudokuBoardView(Context context) {
@@ -30,6 +31,8 @@ public class sudokuBoardView extends View {
 		
 		mLinePaint = new Paint();
 		mLinePaint.setColor(LINE_COLOR);
+		mSectorLinePaint = new Paint();
+		mSectorLinePaint.setColor(LINE_COLOR);
 	}
 	
 	@Override
@@ -43,7 +46,7 @@ public class sudokuBoardView extends View {
 		
 		if( (widthMode != MeasureSpec.UNSPECIFIED) && (heightMode != MeasureSpec.UNSPECIFIED) ){
 			int boardLength = Math.min(width - getPaddingLeft() - getPaddingRight(), height - getPaddingTop() - getPaddingBottom());
-			mGridLength = boardLength / 9.1f;
+			mGridLength = boardLength / 9f;
 			calcSectorLineWidth(boardLength);
 		} else {
 			Log.w(TAG, "sudokuBoardView:onMeasure:  width and height mode is UNSPECIFIED");
@@ -63,8 +66,10 @@ public class sudokuBoardView extends View {
 		for( i=0;i<=9;i++ ){
 			x = paddingLeft + mGridLength * i;
 			y = paddingTop + mGridLength * i;
-			canvas.drawLine(x, paddingTop, x, boardLength, mLinePaint);
-			canvas.drawLine(paddingLeft, y, boardLength,  y, mLinePaint);
+			
+			canvas.drawLine(x, paddingTop, x, boardLength, i%3==0 ? mSectorLinePaint : mLinePaint);
+		
+			canvas.drawLine(paddingLeft, y, boardLength,  y, i%3==0 ? mSectorLinePaint :  mLinePaint);			
 		}		
 	}
 	
@@ -73,6 +78,7 @@ public class sudokuBoardView extends View {
 		float sizeInDip = boardLength / density;
 		float sectorLineWidth = sizeInDip > 150 ? 3.0f : 2.0f;
 		
-		mSectorLineWidth = (int)(sectorLineWidth * density);
+		mSectorLineWidth = (int)(sectorLineWidth * density);		
+		mSectorLinePaint.setStrokeWidth(mSectorLineWidth);
 	}
 }
