@@ -1,6 +1,7 @@
 package com.volvet.vsudoku;
 
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -72,10 +73,21 @@ public class sudokuBoardView extends View {
 		}		
 	}
 	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		int x = (int)event.getX();
+		int y = (int)event.getY();
+		
+		
+		return true;
+	}
+	
 	protected void calcSectorLineWidth(int boardLength) {
 		float density = getContext().getResources().getDisplayMetrics().density;
 		float sizeInDip = boardLength / density;
 		float sectorLineWidth = sizeInDip > 150 ? 3.0f : 2.0f;
 		mSectorLinePaint.setStrokeWidth((int)(sectorLineWidth * density));
 	}
+	
+	
 }
