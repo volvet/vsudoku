@@ -9,7 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
-public class sudokuBoardView extends View {
+public class SudokuBoardView extends View {
 	static final int LINE_COLOR = Color.BLACK;
 	static final int TEXT_COLOR = Color.BLACK;
 	static final int BACKGROUND_COLOR = Color.WHITE;
@@ -21,12 +21,12 @@ public class sudokuBoardView extends View {
 	Paint   mSectorLinePaint;
 	
 	
-	public sudokuBoardView(Context context) {
+	public SudokuBoardView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public sudokuBoardView(Context context, AttributeSet attrs) {
+	public SudokuBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
 		mLinePaint = new Paint();

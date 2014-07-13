@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal">
-       <com.volvet.vsudoku.sudokuBoardView
+       <com.volvet.vsudoku.SudokuBoardView
            android:id="@+id/vsudoku_board"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
