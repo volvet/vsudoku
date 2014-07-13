@@ -16,7 +16,6 @@ public class sudokuBoardView extends View {
 	static final String TAG = "sudokuBoardView";
 	static final float TEXT_RATIO = 0.8f;
 	float   mGridLength;
-	int     mSectorLineWidth;
 	Paint   mLinePaint;
 	Paint   mSectorLinePaint;
 	
@@ -77,8 +76,6 @@ public class sudokuBoardView extends View {
 		float density = getContext().getResources().getDisplayMetrics().density;
 		float sizeInDip = boardLength / density;
 		float sectorLineWidth = sizeInDip > 150 ? 3.0f : 2.0f;
-		
-		mSectorLineWidth = (int)(sectorLineWidth * density);		
-		mSectorLinePaint.setStrokeWidth(mSectorLineWidth);
+		mSectorLinePaint.setStrokeWidth((int)(sectorLineWidth * density));
 	}
 }
