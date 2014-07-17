@@ -30,12 +30,12 @@ public class SudokuBoardView extends View {
 	public SudokuBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		mCellPool = new CellPool();
 		mLinePaint = new Paint();
 		mLinePaint.setColor(LINE_COLOR);
 		mSectorLinePaint = new Paint();
 		mSectorLinePaint.setColor(LINE_COLOR);
 		
+		mCellPool = CellPool.buildDebugCellPool();
 	}
 	
 	@Override
