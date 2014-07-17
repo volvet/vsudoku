@@ -1,6 +1,8 @@
 package com.volvet.vsudoku;
 
 public class Cell {
+	public static final int SUDOKU_SIZE = 9;
+	
 	private int  mValue;
 	private boolean  mEditable;
 	private boolean  mValidate;
@@ -12,6 +14,10 @@ public class Cell {
 	
 	public Cell(int value) {
 		this(value, 0, 0, true);
+	}
+	
+	public Cell(int value, int x, int y) {
+		this(value, x, y, true);
 	}
 	
 	public Cell(int value, int x, int y, boolean bEditable) {

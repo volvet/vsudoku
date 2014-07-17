@@ -16,10 +16,11 @@ public class SudokuBoardView extends View {
 	static final int BACKGROUND_SELECTED_COLOR = Color.YELLOW;
 	static final String TAG = "sudokuBoardView";
 	static final float TEXT_RATIO = 0.8f;
-	float   mGridLength;
-	Paint   mLinePaint;
-	Paint   mSectorLinePaint;
+	private float   mGridLength;
+	private Paint   mLinePaint;
+	private Paint   mSectorLinePaint;	
 	
+	private CellPool   mCellPool;
 	
 	public SudokuBoardView(Context context) {
 		super(context);
@@ -29,10 +30,12 @@ public class SudokuBoardView extends View {
 	public SudokuBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
+		mCellPool = new CellPool();
 		mLinePaint = new Paint();
 		mLinePaint.setColor(LINE_COLOR);
 		mSectorLinePaint = new Paint();
 		mSectorLinePaint.setColor(LINE_COLOR);
+		
 	}
 	
 	@Override
