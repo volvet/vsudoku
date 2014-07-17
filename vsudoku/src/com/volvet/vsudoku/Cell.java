@@ -6,6 +6,14 @@ public class Cell {
 	private boolean  mValidate;
 	private int mX, mY;
 	
+	public Cell() {
+		this(0, 0, 0, true);
+	}
+	
+	public Cell(int value) {
+		this(value, 0, 0, true);
+	}
+	
 	public Cell(int value, int x, int y, boolean bEditable) {
 		setValue(value);
 		setX(x);
