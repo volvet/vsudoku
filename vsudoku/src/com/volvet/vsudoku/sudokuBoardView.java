@@ -19,6 +19,7 @@ public class SudokuBoardView extends View {
 	private float   mGridLength;
 	private Paint   mLinePaint;
 	private Paint   mSectorLinePaint;	
+	private Paint   mCellValuePaint;
 	
 	private CellPool   mCellPool;
 	
@@ -34,6 +35,8 @@ public class SudokuBoardView extends View {
 		mLinePaint.setColor(LINE_COLOR);
 		mSectorLinePaint = new Paint();
 		mSectorLinePaint.setColor(LINE_COLOR);
+		mCellValuePaint = new Paint();
+		mCellValuePaint.setColor(TEXT_COLOR);
 		
 		mCellPool = CellPool.buildDebugCellPool();
 	}
