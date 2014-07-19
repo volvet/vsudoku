@@ -17,6 +17,8 @@ public class SudokuBoardView extends View {
 	static final String TAG = "sudokuBoardView";
 	static final float TEXT_RATIO = 0.8f;
 	private float   mGridLength;
+	private int     mCellValueLeft;
+	private int     mCellValueTop;
 	private Paint   mLinePaint;
 	private Paint   mSectorLinePaint;	
 	private Paint   mCellValuePaint;
@@ -57,6 +59,12 @@ public class SudokuBoardView extends View {
 		} else {
 			Log.w(TAG, "sudokuBoardView:onMeasure:  width and height mode is UNSPECIFIED");
 		}		
+		
+		float textSize = mGridLength * 0.8f;
+		mCellValuePaint.setTextSize(textSize);
+		
+		mCellValueTop = (int)(mGridLength - mCellValuePaint.getTextSize())/2;
+		mCellValueLeft = (int)(mGridLength - mCellValuePaint.measureText("9"))/2;
 	}
 	
 	@Override
@@ -69,7 +77,7 @@ public class SudokuBoardView extends View {
 		int paddingTop = getPaddingTop();
 		float boardLength = mGridLength * 9.0f;
 		
-		for( i=0;i<=9;i++ ){
+		for( i=0;i<=Cell.SUDOKU_SIZE;i++ ){
 			x = paddingLeft + mGridLength * i;
 			y = paddingTop + mGridLength * i;
 			
@@ -77,6 +85,27 @@ public class SudokuBoardView extends View {
 		
 			canvas.drawLine(paddingLeft, y, boardLength,  y, i%3==0 ? mSectorLinePaint :  mLinePaint);			
 		}		
+		
+		onDrawCells(canvas, paddingLeft, paddingTop);
+	}
+	
+	protected void onDrawCells(Canvas canvas, int paddingLeft, int paddingTop) {
+		int i, j;
+		float ascent = mCellValuePaint.ascent();
+		
+		for( j=0;j<Cell.SUDOKU_SIZE;j++ ){
+			for( i=0;i<Cell.SUDOKU_SIZE;i++ ){
+				Cell cell = mCellPool.getCell(i, j);
+				int cellLeft = Math.round(mGridLength * i + paddingLeft);
+				int cellTop  = Math.round(mGridLength * j + paddingTop);
+				if( cell.getValue() != 0 ){
+					canvas.drawText(Integer.toString(cell.getValue()), cellLeft + mCellValueLeft, 
+							cellTop + mCellValueTop - ascent, mCellValuePaint);
+					
+					//Log.i(TAG, "Draw Cell Text j, i = " + Integer.toString(j) + ", " + Integer.toString(i) + "cellTop = " + Integer.toString(cellTop));
+				}
+			}
+		}
 	}
 	
 	@Override
