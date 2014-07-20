@@ -5,6 +5,7 @@ public class CellPool {
 	private    CellGroup[]  mRows;
 	private    CellGroup[]  mColumns;
 	private    CellGroup[]  mSectors;
+	private    Cell         mSelectedCell;
 	
 	public static CellPool  buildDebugCellPool() {
 		int[] values = new int[Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE];
@@ -45,6 +46,8 @@ public class CellPool {
 		}
 		
 		buildCellGroup();
+		
+		mSelectedCell = null;
 	}
 	
 	protected void init(int[] values) {
@@ -58,6 +61,8 @@ public class CellPool {
 		}
 		
 		buildCellGroup();
+		
+		mSelectedCell = null;
 	}
 	
 	public Cell  getCell(int i, int j) {
@@ -70,6 +75,19 @@ public class CellPool {
 			mRows[i] = CellGroup.BuildCellGroup(mCells, i, CellGroup.CELL_GROUP_ROW);
 			mColumns[i] = CellGroup.BuildCellGroup(mCells, i, CellGroup.CELL_GROUP_COLUMN);
 			mSectors[i] = CellGroup.BuildCellGroup(mCells, i, CellGroup.CELL_GROUP_SECTOR);
+		}
+	}
+	
+	public Cell getSelectedCell() {
+		return mSelectedCell;
+	}
+	
+	public void setSelectedCell(int x, int y){
+		if( (x>=0) && (x<Cell.SUDOKU_SIZE) && 
+			(y>=0) && (y<Cell.SUDOKU_SIZE) ){
+			mSelectedCell = mCells[y][x];
+		} else {
+			mSelectedCell = null;
 		}
 	}
 

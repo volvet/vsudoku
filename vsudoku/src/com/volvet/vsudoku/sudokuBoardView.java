@@ -46,7 +46,6 @@ public class SudokuBoardView extends View {
 		mSelectedCellBackgroundPaint.setAlpha(100);
 		
 		mCellPool = CellPool.buildDebugCellPool();
-		mSelectedCell = null;
 	}
 	
 	@Override
@@ -113,9 +112,9 @@ public class SudokuBoardView extends View {
 			}
 		}
 		
-		if( mSelectedCell != null ){
-			int left = paddingLeft +  Math.round(mSelectedCell.getX()*mGridLength);
-			int top = paddingTop +  Math.round(mSelectedCell.getY()*mGridLength);
+		if( mCellPool.getSelectedCell() != null ){
+			int left = paddingLeft +  Math.round(mCellPool.getSelectedCell().getX()*mGridLength);
+			int top = paddingTop +  Math.round(mCellPool.getSelectedCell().getY()*mGridLength);
 			canvas.drawRect(left, top, left + mGridLength, top + mGridLength, mSelectedCellBackgroundPaint);
 		}
 	}
@@ -129,7 +128,7 @@ public class SudokuBoardView extends View {
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_MOVE:
-			mSelectedCell = GetCell(x, y);
+			setSelectedCell(x, y);
 			break;
 		case MotionEvent.ACTION_CANCEL:
 			mSelectedCell = null;
@@ -149,15 +148,16 @@ public class SudokuBoardView extends View {
 		mSectorLinePaint.setStrokeWidth((int)(sectorLineWidth * density));
 	}
 	
-	protected Cell GetCell(int x, int y){
+	protected void setSelectedCell(int x, int y){
 		int posX = (int)((x - getPaddingLeft())/mGridLength);
 		int posY = (int)((y - getPaddingTop())/mGridLength);
 		
 		if( (posX < Cell.SUDOKU_SIZE) && (posY < Cell.SUDOKU_SIZE) ){
-			return mCellPool.getCell(posX, posY);
-		} 		
-		return null;
+			mCellPool.setSelectedCell(posX, posY);
+		}
 	}
 	
-	
+	public CellPool getCellPool() {
+	    return mCellPool;
+	}
 }

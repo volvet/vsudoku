@@ -10,17 +10,42 @@ import android.widget.Button;
 public class SudokuGame {
 	static final String TAG = "SudokuGame"; 
 	static final int BTN_NUM = 10;
+	
+	private CellPool   mCellPool;
+	private SudokuGameListener  mListener = null;
 	private OnClickListener  mBtnClickListener = new  OnClickListener() {
 		@Override
 		public void onClick(View view) {
 			int num = (Integer)view.getTag();
 			
-			Log.i(TAG, "Click " + Integer.toString(num));
+			if( mCellPool == null ){
+				return;
+			}
+			Cell cell = mCellPool.getSelectedCell();			
+			if( cell == null ) {
+				return;
+			}
+			
+			if( cell.getEditable() ){
+				cell.setValue(num);
+				
+				if( mListener != null ){
+					mListener.onCellValueChanged();
+				}
+			}
 		}
 	};
  	
 	public SudokuGame() {
-		
+		mCellPool = null;
+	}
+	
+	public void setCellPool(CellPool  cellPool) {
+		mCellPool = cellPool;
+	}
+	
+	public void setListener(SudokuGameListener listener) {
+		mListener = listener;
 	}
 	
 	public void createInputListener(List<Button> buttons) {
@@ -32,8 +57,12 @@ public class SudokuGame {
 		int i;
 		for( i=0;i<buttons.size();i++ ){
 			Button btn = buttons.get(i);
-			btn.setTag(i+1);
+			btn.setTag(i);
 			btn.setOnClickListener(mBtnClickListener);
 		}
+	}
+	
+	public interface SudokuGameListener {
+		void onCellValueChanged();
 	}
 }
