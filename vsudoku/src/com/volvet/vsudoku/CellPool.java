@@ -12,7 +12,7 @@ public class CellPool {
 		int i;
 		
 		for(i=0;i<Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE;i++ ){
-			values[i] = (i%9) + 1;
+			values[i] = (i%9);
 		}
 		
 		return new CellPool(values);		
@@ -52,9 +52,10 @@ public class CellPool {
 	
 	protected void init(int[] values) {
 		int i;
-		for( i=0;i<Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE;i++ ){
+		for( i=0;i<Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE;i++ ){		
 			if( i< values.length ){
-				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(values[i], i%Cell.SUDOKU_SIZE, i/Cell.SUDOKU_SIZE);
+				boolean bEditable = values[i] == 0 ? true : false;
+				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(values[i], i%Cell.SUDOKU_SIZE, i/Cell.SUDOKU_SIZE, bEditable);
 			} else {
 				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(0, i%Cell.SUDOKU_SIZE, i/Cell.SUDOKU_SIZE);
 			}
