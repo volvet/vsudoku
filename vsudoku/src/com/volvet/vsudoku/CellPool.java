@@ -91,5 +91,17 @@ public class CellPool {
 			mSelectedCell = null;
 		}
 	}
+	
+	public boolean validate() {
+		boolean bValidate = true;
+		int i;
+		for( i=0;i<Cell.SUDOKU_SIZE;i++ ){
+			bValidate &= mRows[i].validate();
+			bValidate &= mColumns[i].validate();
+			bValidate &= mSectors[i].validate();
+		}
+		
+		return bValidate;
+	}
 
 }
