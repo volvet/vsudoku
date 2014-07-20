@@ -22,8 +22,10 @@ public class SudokuBoardView extends View {
 	private Paint   mLinePaint;
 	private Paint   mSectorLinePaint;	
 	private Paint   mCellValuePaint;
+	private Paint   mSelectedCellBackgroundPaint;
 	
 	private CellPool   mCellPool;
+	private Cell       mSelectedCell;
 	
 	public SudokuBoardView(Context context) {
 		super(context);
@@ -39,8 +41,12 @@ public class SudokuBoardView extends View {
 		mSectorLinePaint.setColor(LINE_COLOR);
 		mCellValuePaint = new Paint();
 		mCellValuePaint.setColor(TEXT_COLOR);
+		mSelectedCellBackgroundPaint = new Paint();
+		mSelectedCellBackgroundPaint.setColor(BACKGROUND_SELECTED_COLOR);
+		mSelectedCellBackgroundPaint.setAlpha(100);
 		
 		mCellPool = CellPool.buildDebugCellPool();
+		mSelectedCell = null;
 	}
 	
 	@Override
@@ -106,6 +112,12 @@ public class SudokuBoardView extends View {
 				}
 			}
 		}
+		
+		if( mSelectedCell != null ){
+			int left = paddingLeft +  Math.round(mSelectedCell.getX()*mGridLength);
+			int top = paddingTop +  Math.round(mSelectedCell.getY()*mGridLength);
+			canvas.drawRect(left, top, left + mGridLength, top + mGridLength, mSelectedCellBackgroundPaint);
+		}
 	}
 	
 	@Override
@@ -113,7 +125,20 @@ public class SudokuBoardView extends View {
 		int x = (int)event.getX();
 		int y = (int)event.getY();
 		
+		switch(event.getAction()){
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_MOVE:
+			mSelectedCell = GetCell(x, y);
+			break;
+		case MotionEvent.ACTION_CANCEL:
+			mSelectedCell = null;
+			break;
+		default:
+			break;			
+		}			
 		
+		postInvalidate();
 		return true;
 	}
 	
@@ -122,6 +147,16 @@ public class SudokuBoardView extends View {
 		float sizeInDip = boardLength / density;
 		float sectorLineWidth = sizeInDip > 150 ? 3.0f : 2.0f;
 		mSectorLinePaint.setStrokeWidth((int)(sectorLineWidth * density));
+	}
+	
+	protected Cell GetCell(int x, int y){
+		int posX = (int)((x - getPaddingLeft())/mGridLength);
+		int posY = (int)((y - getPaddingTop())/mGridLength);
+		
+		if( (posX < Cell.SUDOKU_SIZE) && (posY < Cell.SUDOKU_SIZE) ){
+			return mCellPool.getCell(posX, posY);
+		} 		
+		return null;
 	}
 	
 	

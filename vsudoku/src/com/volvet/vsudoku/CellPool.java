@@ -51,9 +51,9 @@ public class CellPool {
 		int i;
 		for( i=0;i<Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE;i++ ){
 			if( i< values.length ){
-				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(values[i], i/Cell.SUDOKU_SIZE, i%Cell.SUDOKU_SIZE);
+				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(values[i], i%Cell.SUDOKU_SIZE, i/Cell.SUDOKU_SIZE);
 			} else {
-				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(0, i/Cell.SUDOKU_SIZE, i%Cell.SUDOKU_SIZE);
+				mCells[i/Cell.SUDOKU_SIZE][i%Cell.SUDOKU_SIZE] = new Cell(0, i%Cell.SUDOKU_SIZE, i/Cell.SUDOKU_SIZE);
 			}
 		}
 		
