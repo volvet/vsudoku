@@ -7,15 +7,20 @@ public class CellPool {
 	private    CellGroup[]  mSectors;
 	private    Cell         mSelectedCell;
 	
-	public static CellPool  buildDebugCellPool() {
-		int[] values = new int[Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE];
-		int i;
-		
-		for(i=0;i<Cell.SUDOKU_SIZE*Cell.SUDOKU_SIZE;i++ ){
-			values[i] = (i%9);
-		}
-		
-		return new CellPool(values);		
+	private final static int sampleSudoku[] = {
+		0, 5, 2, 0, 0, 6, 0, 0, 0, 
+		1, 6, 0, 9, 0, 0, 0, 0, 4, 
+		0, 4, 9, 8, 0, 3, 6, 2, 0, 
+		4, 0, 0, 0, 0, 0, 8, 0, 0,  
+		0, 8, 3, 2, 0, 1, 5, 9, 0, 
+		0, 0, 1, 0, 0, 0, 0, 0, 2, 
+		0, 9, 7, 3, 0, 5, 2, 4, 0, 
+		2, 0, 0, 0, 0, 9, 0, 5, 6, 
+		0, 0, 0, 1, 0, 0, 9, 7, 0
+	};
+	
+	public static CellPool  buildDebugCellPool() {		
+		return new CellPool(sampleSudoku);		
 	}
 		
 	public CellPool() {
@@ -101,6 +106,17 @@ public class CellPool {
 			bValidate &= mSectors[i].validate();
 		}
 		
+		return bValidate;
+	}
+	
+	public boolean validate(int x, int y) {
+		boolean bValidate = true;
+		if( (x>=0) && (x<Cell.SUDOKU_SIZE) && 
+			(y>=0) && (y<Cell.SUDOKU_SIZE) ){
+			bValidate &= mRows[y].validate();
+			bValidate &= mColumns[x].validate();
+			bValidate &= mSectors[y/3*3 + x/3].validate();
+		} 
 		return bValidate;
 	}
 

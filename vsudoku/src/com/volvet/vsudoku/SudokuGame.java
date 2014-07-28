@@ -28,7 +28,7 @@ public class SudokuGame {
 			
 			if( cell.getEditable() ){
 				cell.setValue(num);
-				
+				mCellPool.validate(cell.getX(), cell.getY());
 				if( mListener != null ){
 					mListener.onCellValueChanged();
 				}

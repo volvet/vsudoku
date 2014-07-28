@@ -49,6 +49,7 @@ public class CellGroup {
 		Map<Integer, Cell>  hashCells = new HashMap<Integer, Cell>();  
 		
 		for( int i=0;i<mCells.length;i++ ){
+			mCells[i].setValidate(true);
 			if( mCells[i].getValue() != 0 ){
 				int value = mCells[i].getValue();
 				if( hashCells.get(value) != null ){

@@ -15,6 +15,7 @@ public class SudokuBoardView extends View {
 	static final int BACKGROUND_COLOR = Color.WHITE;
 	static final int BACKGROUND_SELECTED_COLOR = Color.YELLOW;
 	static final int BACKGROUND_READONLY_COLOR = Color.rgb(50,50,50);
+	static final int BACKGROUND_INVALIDATE_COLOR = Color.RED;
 	static final String TAG = "sudokuBoardView";
 	static final float TEXT_RATIO = 0.8f;
 	private float   mGridLength;
@@ -25,6 +26,7 @@ public class SudokuBoardView extends View {
 	private Paint   mCellValuePaint;
 	private Paint   mSelectedCellBackgroundPaint;
 	private Paint   mReadOnlyBackgroundPaint;
+	private Paint   mInvalidateBackgroundPaint;
 	
 	private CellPool   mCellPool;
 	private Cell       mSelectedCell;
@@ -49,6 +51,9 @@ public class SudokuBoardView extends View {
 		mReadOnlyBackgroundPaint = new Paint();
 		mReadOnlyBackgroundPaint.setColor(BACKGROUND_READONLY_COLOR);
 		mReadOnlyBackgroundPaint.setAlpha(100);
+		mInvalidateBackgroundPaint = new Paint();
+		mInvalidateBackgroundPaint.setColor(BACKGROUND_INVALIDATE_COLOR);
+		mInvalidateBackgroundPaint.setAlpha(100);
 		
 		mCellPool = CellPool.buildDebugCellPool();
 	}
@@ -114,6 +119,9 @@ public class SudokuBoardView extends View {
 				}
 				if( cell.getEditable() == false ){
 					canvas.drawRect(cellLeft, cellTop, cellLeft + mGridLength, cellTop + mGridLength, mReadOnlyBackgroundPaint);
+				}
+				if( cell.getValidate() == false ){
+					canvas.drawRect(cellLeft, cellTop, cellLeft + mGridLength, cellTop + mGridLength, mInvalidateBackgroundPaint);
 				}
 			}
 		}
