@@ -113,6 +113,10 @@ public class CellPool {
 		boolean bValidate = true;
 		if( (x>=0) && (x<Cell.SUDOKU_SIZE) && 
 			(y>=0) && (y<Cell.SUDOKU_SIZE) ){
+			mRows[y].cleanValidateFlag();
+			mColumns[x].cleanValidateFlag();
+			mSectors[y/3*3 + x/3].cleanValidateFlag();
+			
 			bValidate &= mRows[y].validate();
 			bValidate &= mColumns[x].validate();
 			bValidate &= mSectors[y/3*3 + x/3].validate();

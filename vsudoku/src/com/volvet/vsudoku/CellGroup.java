@@ -43,13 +43,18 @@ public class CellGroup {
 		}
 	}
 	
+	public void   cleanValidateFlag() {
+		for( int i=0;i<mCells.length;i++ ){
+			mCells[i].setValidate(true);
+		}
+	}
+	
 	public boolean validate() {
 		boolean bValidate = true;	
 		
 		Map<Integer, Cell>  hashCells = new HashMap<Integer, Cell>();  
 		
-		for( int i=0;i<mCells.length;i++ ){
-			mCells[i].setValidate(true);
+		for( int i=0;i<mCells.length;i++ ){			
 			if( mCells[i].getValue() != 0 ){
 				int value = mCells[i].getValue();
 				if( hashCells.get(value) != null ){
