@@ -56,6 +56,7 @@ public class SudokuBoardView extends View {
 		mInvalidateBackgroundPaint.setAlpha(100);
 		
 		mCellPool = CellPool.buildDebugCellPool();
+		
 	}
 	
 	@Override
@@ -173,5 +174,11 @@ public class SudokuBoardView extends View {
 	
 	public CellPool getCellPool() {
 	    return mCellPool;
+	}
+	
+	public void  newGame() {
+		SudokuBuilder builder = new SimpleSudokuBuiler();
+		mCellPool = new CellPool(builder.buildSudokuProtoType());
+		postInvalidate();
 	}
 }

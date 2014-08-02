@@ -69,6 +69,8 @@ public class CellPool {
 		buildCellGroup();
 		
 		mSelectedCell = null;
+		
+		validate();
 	}
 	
 	public Cell  getCell(int i, int j) {
@@ -99,7 +101,10 @@ public class CellPool {
 	
 	public boolean validate() {
 		boolean bValidate = true;
-		int i;
+		int i;	
+		
+		cleanValidateFlag();
+		
 		for( i=0;i<Cell.SUDOKU_SIZE;i++ ){
 			bValidate &= mRows[i].validate();
 			bValidate &= mColumns[i].validate();
@@ -122,6 +127,14 @@ public class CellPool {
 			bValidate &= mSectors[y/3*3 + x/3].validate();
 		} 
 		return bValidate;
+	}
+	
+	protected void cleanValidateFlag() {
+		int i;
+		
+		for( i=0;i<Cell.SUDOKU_SIZE;i++ ){
+			mRows[i].cleanValidateFlag();
+		}
 	}
 
 }

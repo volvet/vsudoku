@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements SudokuGame.SudokuGameListener {
 	private SudokuGame  mGame = new SudokuGame();
@@ -26,6 +28,17 @@ public class MainActivity extends Activity implements SudokuGame.SudokuGameListe
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int  itemId = item.getItemId();
+		switch(itemId) {
+		case R.id.action_newGame:
+			((SudokuBoardView)findViewById(R.id.vsudoku_board)).newGame();
+			break;
+		}
 		return true;
 	}
 	
