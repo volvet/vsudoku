@@ -21,6 +21,10 @@ public class LinkMatrix {
 	    initRowLinks();
 	    initNodes(dataMatrix);
 	}
+	
+	public void search(int k) {
+		
+	}
 
 	private void initColLinks() {
 		int i;
@@ -55,6 +59,14 @@ public class LinkMatrix {
 				}
 			}
 		}
+	}
+	
+	private void cover(int colIdx) {
+		
+	}
+	
+	private void uncover(int colIdx) {
+		
 	}
 	
 	public static boolean Test() {
