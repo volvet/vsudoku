@@ -71,10 +71,22 @@ public class LinkMatrix {
 		int i;
 		for( i=0;i<linkMatrix.mColLinks.length;i++ ){
 			Log.i(TAG, "col " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mColLinks[i].size()));
+			LinkNode node = linkMatrix.mColLinks[i];
+			while( node != null ){
+				Log.i(TAG, "pos = " + Integer.toString(node.col()) + ", " + Integer.toString(node.row()));
+				node = node.down();
+			}
 		}
 		for( i=0;i<linkMatrix.mRowLinks.length;i++ ){
 			Log.i(TAG, "row " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mRowLinks[i].size()));
+			LinkNode node = linkMatrix.mRowLinks[i];
+			while( node != null ){
+				Log.i(TAG, "pos = " + Integer.toString(node.col()) + ", " + Integer.toString(node.row()));
+				node = node.right();
+			}
 		}
+		
+		
 		
 		return false;
 	}

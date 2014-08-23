@@ -7,7 +7,7 @@ public class LinkHeader extends LinkNode {
 	private  int  mSize;
 	private  int  mType;
     public LinkHeader(int type, int idx) {
-    	super(type == COL_HEADER ? idx : 0,  type == COL_HEADER ? 0 : idx);
+    	super(type == COL_HEADER ? idx : -1,  type == COL_HEADER ? -1 : idx);
     	mSize = 0;
     	mType = type;
     }
