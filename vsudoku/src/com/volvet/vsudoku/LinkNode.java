@@ -1,12 +1,12 @@
 package com.volvet.vsudoku;
 
 public class LinkNode {
-	LinkNode  mUp = null;
-	LinkNode  mDown = null;
-	LinkNode  mLeft = null;
-	LinkNode  mRight = null;
-	int       mCol; 
-	int       mRow;
+	private LinkNode  mUp = null;
+	private LinkNode  mDown = null;
+	private LinkNode  mLeft = null;
+	private LinkNode  mRight = null;
+	private int       mCol; 
+	private int       mRow;
 	
 	public LinkNode() {
 		this(0, 0, null, null, null, null);
@@ -52,4 +52,20 @@ public class LinkNode {
 	public void Right(LinkNode node) {
 		mRight = node;
 	}
-}
+	
+	public int Col() {
+		return mCol;
+	}
+	
+	public void Col(int col) {
+		mCol = col;
+	}
+	
+	public int Row() {
+		return mRow;
+	}
+	
+	public void Row(int row) {
+		mRow = row;
+	}
+ }
