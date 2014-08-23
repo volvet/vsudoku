@@ -3,6 +3,7 @@
 
     <string name="app_name">vsudoku</string>
     <string name="action_newGame">New Game</string>
+    <string name="action_test">Test</string>
     <string name="hello_world">Hello world!</string>
     <string name="number_1">1</string>
     <string name="number_2">2</string>
