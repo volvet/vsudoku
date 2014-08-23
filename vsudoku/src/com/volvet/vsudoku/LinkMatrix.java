@@ -1,6 +1,9 @@
 package com.volvet.vsudoku;
 
+import android.util.Log;
+
 public class LinkMatrix {
+	private static final String TAG = "LinkMatrix";
 	private   LinkHeader[]   mColLinks = null;
 	private   LinkHeader[]   mRowLinks = null;
 	private   int            mRowNum,  mColNum;
@@ -10,7 +13,7 @@ public class LinkMatrix {
 		mColNum = 0;		
 	}
 	
-	public void init(int rowNum, int colNum,  int[] dataMatrix) {
+	public void init(int colNum, int rowNum,  int[] dataMatrix) {
 	    mRowNum = rowNum;
 	    mColNum = colNum;
 	    
@@ -35,9 +38,9 @@ public class LinkMatrix {
 		mRowLinks = new LinkHeader[mRowNum];
 		mRowLinks[0] = new LinkHeader(LinkHeader.ROW_HEADER, 0);
 		for( i=1;i<mRowNum;i++ ){
-			mRowLinks[i+1] = new LinkHeader(LinkHeader.ROW_HEADER, i);	
-			mRowLinks[i].down(mRowLinks[i+1]);
-			mRowLinks[i+1].up(mRowLinks[i]);
+			mRowLinks[i] = new LinkHeader(LinkHeader.ROW_HEADER, i);	
+			mRowLinks[i-1].down(mRowLinks[i]);
+			mRowLinks[i].up(mRowLinks[i-1]);
 		}
 	}
 	
@@ -47,14 +50,32 @@ public class LinkMatrix {
 			for( i=0;i<mColNum;i++ ){
 				if( dataMatrix[j*mColNum+i] != 0 ){
 				    LinkNode node = new LinkNode(i, j);
-				    mRowLinks[i].insertNode(node);
-				    mColLinks[j].insertNode(node);
+				    mRowLinks[j].insertNode(node);
+				    mColLinks[i+1].insertNode(node);
 				}
 			}
 		}
 	}
 	
 	public static boolean Test() {
+		int []  dataMatrix = {
+				0, 1, 1, 1,
+				1, 0, 0, 1,
+				1, 1, 1, 0, 
+				0, 1, 0, 1,
+				1, 0, 0, 0, 
+		};
+		
+		LinkMatrix  linkMatrix = new LinkMatrix();
+		linkMatrix.init(4, 5, dataMatrix);
+		int i;
+		for( i=0;i<linkMatrix.mColLinks.length;i++ ){
+			Log.i(TAG, "col " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mColLinks[i].size()));
+		}
+		for( i=0;i<linkMatrix.mRowLinks.length;i++ ){
+			Log.i(TAG, "row " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mRowLinks[i].size()));
+		}
+		
 		return false;
 	}
 }

@@ -30,6 +30,7 @@ public class LinkHeader extends LinkNode {
     
     protected void insertColNode(LinkNode node){
     	node.down(down());
+    	node.up(this);
     	down(node);
     	
     	mSize ++;
@@ -38,6 +39,7 @@ public class LinkHeader extends LinkNode {
     protected void insertRowNode(LinkNode node) {
     	node.right(right());
     	right(node);
+    	node.left(this);
     	
     	mSize ++;
     }    

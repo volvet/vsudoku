@@ -39,6 +39,7 @@ public class MainActivity extends Activity implements SudokuGame.SudokuGameListe
 			((SudokuBoardView)findViewById(R.id.vsudoku_board)).newGame();
 			break;
 		case R.id.action_test:
+			LinkMatrix.Test();
 			break;
 		}
 		return true;
