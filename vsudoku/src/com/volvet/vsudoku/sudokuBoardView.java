@@ -29,7 +29,6 @@ public class SudokuBoardView extends View {
 	private Paint   mInvalidateBackgroundPaint;
 	
 	private CellPool   mCellPool;
-	private Cell       mSelectedCell;
 	
 	public SudokuBoardView(Context context) {
 		super(context);
@@ -146,7 +145,7 @@ public class SudokuBoardView extends View {
 			setSelectedCell(x, y);
 			break;
 		case MotionEvent.ACTION_CANCEL:
-			mSelectedCell = null;
+            setSelectedCell(-1, -1);
 			break;
 		default:
 			break;			

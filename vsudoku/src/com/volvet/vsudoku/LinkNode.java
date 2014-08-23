@@ -12,60 +12,64 @@ public class LinkNode {
 		this(0, 0, null, null, null, null);
 	}
 	
-	public LinkNode(int col, int row, LinkNode up, LinkNode down, LinkNode left, LinkNode right) {
-		mCol = col;
-		mRow = row;
-		Up(up);
-		Down(down);
-		Left(left);
-		Right(right);
+	public LinkNode(int col, int row) {
+		this(col, row, null, null, null, null);
 	}
 	
-	public LinkNode  Up() {
+	public LinkNode(int col, int row, LinkNode up, LinkNode down, LinkNode left, LinkNode right) {
+		col(col);
+		row(row);
+		up(up);
+		down(down);
+		left(left);
+		right(right);
+	}
+	
+	public LinkNode  up() {
 		return mUp;
 	}
 	
-	public void Up(LinkNode node) {
+	public void up(LinkNode node) {
 		mUp = node;
 	}
 	
-	public LinkNode Down() {
+	public LinkNode down() {
 		return mDown;
 	}
 	
-	public void Down(LinkNode node) {
+	public void down(LinkNode node) {
 		mDown = node;
 	}
 	
-	public LinkNode Left() {
+	public LinkNode left() {
 		return mLeft;
 	}
 	
-	public void Left(LinkNode node){
+	public void left(LinkNode node){
 		mLeft = node;
 	}
 	
-	public LinkNode Right() {
+	public LinkNode right() {
 		return mRight;
 	}
 
-	public void Right(LinkNode node) {
+	public void right(LinkNode node) {
 		mRight = node;
 	}
 	
-	public int Col() {
+	public int col() {
 		return mCol;
 	}
 	
-	public void Col(int col) {
+	public void col(int col) {
 		mCol = col;
 	}
 	
-	public int Row() {
+	public int row() {
 		return mRow;
 	}
 	
-	public void Row(int row) {
+	public void row(int row) {
 		mRow = row;
 	}
  }

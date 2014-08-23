@@ -23,7 +23,7 @@ public class CellGroup {
 	}
 	
 	protected void addCells(Cell[][] cells, int idx, int groupType) {
-		int i, j;
+		int i;
 		switch(groupType) {
 		case CELL_GROUP_ROW:
 			for( i=0;i<Cell.SUDOKU_SIZE;i++ ){
