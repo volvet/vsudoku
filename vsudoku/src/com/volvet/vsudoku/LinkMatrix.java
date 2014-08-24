@@ -1,12 +1,22 @@
 package com.volvet.vsudoku;
 
 import android.util.Log;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class LinkMatrix {
 	private static final String TAG = "LinkMatrix";
+	
+	private static final int  COL_OFFSET   = 1;
+	
+	public static final int  STATUS_RESOLVED  = -1;
+	public static final int  STATUS_NO_ANSWER = -2;
+	
 	private   LinkHeader[]   mColLinks = null;
 	private   LinkHeader[]   mRowLinks = null;
 	private   int            mRowNum,  mColNum;
+	private   List<Integer>  mResultList = new ArrayList<Integer>();
 	
 	public LinkMatrix() {
 		mRowNum = 0;
@@ -20,10 +30,45 @@ public class LinkMatrix {
 	    initColLinks();
 	    initRowLinks();
 	    initNodes(dataMatrix);
+	    
+	    mResultList.clear();
 	}
 	
 	public int search(int k) {
+		int col = selectCol();
+		
+		if( col < 0 ) return col;
+		
+		cover(col);
+		LinkNode colNode = mColLinks[col + COL_OFFSET];
+		
+		while( null != colNode ){
+			mResultList.add(colNode.row());		
+			LinkNode rowNode = mRowLinks[colNode.row()];
+			while( null != rowNode ){
+				cover(rowNode.col());
+				rowNode = rowNode.right();
+			}
+			
+			int res = search(k+1);
+			if( res < 0 ){
+				return res;
+			}
+			rowNode = mRowLinks[colNode.row()];
+			while( null != rowNode ){
+				uncover(rowNode.col());
+				rowNode = rowNode.right();
+			}
+			
+			mResultList.remove(mResultList.indexOf(colNode.row()));
+			colNode = colNode.down();
+		}
+		uncover(col);
 		return k;
+	}
+	
+	public List<Integer> GetResult() {
+		return mResultList;
 	}
 
 	private void initColLinks() {
@@ -55,14 +100,14 @@ public class LinkMatrix {
 				if( dataMatrix[j*mColNum+i] != 0 ){
 				    LinkNode node = new LinkNode(i, j);
 				    mRowLinks[j].insertNode(node);
-				    mColLinks[i+1].insertNode(node);
+				    mColLinks[i+COL_OFFSET].insertNode(node);
 				}
 			}
 		}
 	}
 	
 	private void cover(int colIdx) {
-		LinkHeader  colHeader = mColLinks[colIdx];
+		LinkHeader  colHeader = mColLinks[colIdx + COL_OFFSET];
 		LinkNode   colNode = colHeader.down();
 		
 		colHeader.left().right(colHeader.right());
@@ -85,7 +130,7 @@ public class LinkMatrix {
 	}
 	
 	private void uncover(int colIdx) {
-		LinkHeader  colHeader = mColLinks[colIdx];
+		LinkHeader  colHeader = mColLinks[colIdx + COL_OFFSET];
 		LinkNode   colNode = colHeader.down();
 		
 		while( null != colNode ) {
@@ -103,6 +148,35 @@ public class LinkMatrix {
 		}
 		colHeader.right().left(colHeader);
 		colHeader.left().right(colHeader);
+	}
+	
+	private int selectCol() {	
+		int  minSize = mRowNum + 1;
+		int  col = -1;
+		LinkHeader  root = mColLinks[0];
+		
+		if( null == root.right() ){
+			return STATUS_RESOLVED;
+		}
+		
+		LinkHeader colHeader = (LinkHeader)root.right();
+		
+		while( null != colHeader ){
+			if( colHeader.size() < minSize ){
+				col = colHeader.col();
+				minSize = colHeader.size();
+			}
+			
+			if( minSize == 0 ){
+				return STATUS_NO_ANSWER;
+			}
+			
+			if( minSize == 1) {
+				return col;
+			}
+		}
+		
+		return col;
 	}
 	
 	public static boolean Test() {
