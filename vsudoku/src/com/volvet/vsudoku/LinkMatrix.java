@@ -74,12 +74,14 @@ public class LinkMatrix {
 	private void initColLinks() {
 		int i;
 		mColLinks = new LinkHeader[mColNum + 1];
-		mColLinks[0] = new LinkHeader(LinkHeader.COL_HEADER, -1);
+		mColLinks[0] = new LinkHeader();
 		for( i=0;i<mColNum;i++ ){
 			mColLinks[i+1] = new LinkHeader(LinkHeader.COL_HEADER, i);	
 			mColLinks[i].right(mColLinks[i+1]);
 			mColLinks[i+1].left(mColLinks[i]);
-		}		
+		}
+		mColLinks[0].left(mColLinks[mColNum]);
+		mColLinks[mColNum].right(mColLinks[0]);
 	}
 	
 	private void initRowLinks() {
@@ -91,6 +93,8 @@ public class LinkMatrix {
 			mRowLinks[i-1].down(mRowLinks[i]);
 			mRowLinks[i].up(mRowLinks[i-1]);
 		}
+		mRowLinks[0].up(mRowLinks[mRowNum-1]);
+		mRowLinks[mRowNum-1].down(mRowLinks[0]);
 	}
 	
 	private void initNodes(int [] dataMatrix){
@@ -113,14 +117,16 @@ public class LinkMatrix {
 		colHeader.left().right(colHeader.right());
 		colHeader.right().left(colHeader.left());
 		
-		while( null != colNode ){
+		while( colHeader != colNode ){
 			LinkHeader rowHeader = mRowLinks[colNode.row()];
-			LinkNode   rowNode = rowHeader;
+			LinkNode   rowNode = rowHeader.right();
 			
-			while( null != rowNode ){				
+			rowHeader.up().down(rowHeader.down());
+			rowHeader.down().up(rowHeader.up());
+			while( rowHeader != rowNode ){				
 				rowNode.up().down(rowNode.down());
 				rowNode.down().up(rowNode.up());
-				mColLinks[rowNode.col()].decreaseSize();
+				mColLinks[rowNode.col() + COL_OFFSET].decreaseSize();
 				rowNode = rowNode.right();
 			}
 			
@@ -133,12 +139,14 @@ public class LinkMatrix {
 		LinkHeader  colHeader = mColLinks[colIdx + COL_OFFSET];
 		LinkNode   colNode = colHeader.down();
 		
-		while( null != colNode ) {
+		while( colHeader != colNode ) {
 			LinkHeader rowHeader = mRowLinks[colNode.row()];
-			LinkNode   rowNode = rowHeader;
+			LinkNode   rowNode = rowHeader.right();
 			
-			while( null != rowNode ){
-				mColLinks[rowNode.col()].increaseSize();
+			rowHeader.down().up(rowHeader);
+			rowHeader.up().down(rowHeader);
+			while( rowHeader != rowNode ){
+				mColLinks[rowNode.col() + COL_OFFSET].increaseSize();
 				rowNode.down().up(rowNode);
 				rowNode.up().down(rowNode);
 				rowNode = rowNode.right();
@@ -161,7 +169,7 @@ public class LinkMatrix {
 		
 		LinkHeader colHeader = (LinkHeader)root.right();
 		
-		while( null != colHeader ){
+		while( root != colHeader ){
 			if( colHeader.size() < minSize ){
 				col = colHeader.col();
 				minSize = colHeader.size();
@@ -174,6 +182,8 @@ public class LinkMatrix {
 			if( minSize == 1) {
 				return col;
 			}
+			
+			colHeader = (LinkHeader)colHeader.right();
 		}
 		
 		return col;
@@ -190,25 +200,8 @@ public class LinkMatrix {
 		
 		LinkMatrix  linkMatrix = new LinkMatrix();
 		linkMatrix.init(4, 5, dataMatrix);
-		int i;
-		for( i=0;i<linkMatrix.mColLinks.length;i++ ){
-			Log.i(TAG, "col " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mColLinks[i].size()));
-			LinkNode node = linkMatrix.mColLinks[i];
-			while( node != null ){
-				Log.i(TAG, "pos = " + Integer.toString(node.col()) + ", " + Integer.toString(node.row()));
-				node = node.down();
-			}
-		}
-		for( i=0;i<linkMatrix.mRowLinks.length;i++ ){
-			Log.i(TAG, "row " + Integer.toString(i) + " size = " + Integer.toString(linkMatrix.mRowLinks[i].size()));
-			LinkNode node = linkMatrix.mRowLinks[i];
-			while( node != null ){
-				Log.i(TAG, "pos = " + Integer.toString(node.col()) + ", " + Integer.toString(node.row()));
-				node = node.right();
-			}
-		}
 		
-		
+		linkMatrix.search(0);
 		
 		return false;
 	}
