@@ -40,12 +40,15 @@ public class LinkMatrix {
 		if( col < 0 ) return col;
 		
 		cover(col);
-		LinkNode colNode = mColLinks[col + COL_OFFSET];
+		LinkHeader colHeader = mColLinks[col + COL_OFFSET];
+		LinkNode colNode = colHeader.down();
 		
-		while( null != colNode ){
-			mResultList.add(colNode.row());		
-			LinkNode rowNode = mRowLinks[colNode.row()];
-			while( null != rowNode ){
+		while( colHeader != colNode ){
+			//mResultList.add(colNode.row());		
+			Log.i(TAG, "add row " + Integer.toString(colNode.row()) );
+			LinkHeader rowHeader = mRowLinks[colNode.row()];
+			LinkNode rowNode = rowHeader.right();
+			while( rowHeader != rowNode ){
 				cover(rowNode.col());
 				rowNode = rowNode.right();
 			}
@@ -54,13 +57,13 @@ public class LinkMatrix {
 			if( res < 0 ){
 				return res;
 			}
-			rowNode = mRowLinks[colNode.row()];
-			while( null != rowNode ){
+			rowNode = rowHeader.right();
+			while( rowHeader != rowNode ){
 				uncover(rowNode.col());
 				rowNode = rowNode.right();
 			}
-			
-			mResultList.remove(mResultList.indexOf(colNode.row()));
+			Log.i(TAG, "remove row " + Integer.toString(colNode.row()) );
+			//mResultList.remove(mResultList.indexOf(colNode.row()));
 			colNode = colNode.down();
 		}
 		uncover(col);
@@ -118,12 +121,9 @@ public class LinkMatrix {
 		colHeader.right().left(colHeader.left());
 		
 		while( colHeader != colNode ){
-			LinkHeader rowHeader = mRowLinks[colNode.row()];
-			LinkNode   rowNode = rowHeader.right();
+			LinkNode   rowNode = colNode.right();
 			
-			rowHeader.up().down(rowHeader.down());
-			rowHeader.down().up(rowHeader.up());
-			while( rowHeader != rowNode ){				
+			while( colNode != rowNode ){				
 				rowNode.up().down(rowNode.down());
 				rowNode.down().up(rowNode.up());
 				mColLinks[rowNode.col() + COL_OFFSET].decreaseSize();
@@ -140,12 +140,9 @@ public class LinkMatrix {
 		LinkNode   colNode = colHeader.down();
 		
 		while( colHeader != colNode ) {
-			LinkHeader rowHeader = mRowLinks[colNode.row()];
-			LinkNode   rowNode = rowHeader.right();
+			LinkNode   rowNode = colNode.right();
 			
-			rowHeader.down().up(rowHeader);
-			rowHeader.up().down(rowHeader);
-			while( rowHeader != rowNode ){
+			while( colNode != rowNode ){
 				mColLinks[rowNode.col() + COL_OFFSET].increaseSize();
 				rowNode.down().up(rowNode);
 				rowNode.up().down(rowNode);
