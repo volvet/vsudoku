@@ -44,8 +44,8 @@ public class LinkMatrix {
 		LinkNode colNode = colHeader.down();
 		
 		while( colHeader != colNode ){
-			//mResultList.add(colNode.row());		
-			Log.i(TAG, "add row " + Integer.toString(colNode.row()) );
+			mResultList.add(colNode.row());		
+			//Log.i(TAG, "add row " + Integer.toString(colNode.row()) );
 			LinkHeader rowHeader = mRowLinks[colNode.row()];
 			LinkNode rowNode = rowHeader.right();
 			while( rowHeader != rowNode ){
@@ -62,8 +62,8 @@ public class LinkMatrix {
 				uncover(rowNode.col());
 				rowNode = rowNode.right();
 			}
-			Log.i(TAG, "remove row " + Integer.toString(colNode.row()) );
-			//mResultList.remove(mResultList.indexOf(colNode.row()));
+			//Log.i(TAG, "remove row " + Integer.toString(colNode.row()) );
+			mResultList.remove(mResultList.indexOf(colNode.row()));
 			colNode = colNode.down();
 		}
 		uncover(col);
@@ -200,6 +200,23 @@ public class LinkMatrix {
 		
 		linkMatrix.search(0);
 		
-		return false;
+		List<Integer> result = linkMatrix.GetResult();
+		
+		int i, j;
+		int[] sum = new int[4];
+		for( j=0;j<result.size();j++ ){
+			int row = result.get(j);
+			for( i=0;i<4;i++ ){
+				sum[i] += dataMatrix[row*4 + i];
+			}
+		}
+		
+		for( i=0;i<4;i++ ){
+			if( sum[i] != 1 ){
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

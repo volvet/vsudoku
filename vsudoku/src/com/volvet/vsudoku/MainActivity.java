@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
+
 
 
 public class MainActivity extends Activity implements SudokuGame.SudokuGameListener {
@@ -39,7 +41,11 @@ public class MainActivity extends Activity implements SudokuGame.SudokuGameListe
 			((SudokuBoardView)findViewById(R.id.vsudoku_board)).newGame();
 			break;
 		case R.id.action_test:
-			LinkMatrix.Test();
+			if( LinkMatrix.Test() ){
+				Toast.makeText(this, "Test Successfully", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(this, "Test Failed", Toast.LENGTH_LONG).show();
+			}
 			break;
 		}
 		return true;
