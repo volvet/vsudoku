@@ -16,6 +16,18 @@ public class LinkHeader extends LinkNode {
     	return mSize;
     }
     
+    public void size(int size) {
+    	mSize = size;
+    }
+    
+    public void decreaseSize() {
+    	-- mSize; 
+    }
+    
+    public void increaseSize() {
+    	++ mSize;
+    }
+    
     public int type() {
     	return mType;
     }

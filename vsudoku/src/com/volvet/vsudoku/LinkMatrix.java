@@ -22,8 +22,8 @@ public class LinkMatrix {
 	    initNodes(dataMatrix);
 	}
 	
-	public void search(int k) {
-		
+	public int search(int k) {
+		return k;
 	}
 
 	private void initColLinks() {
@@ -62,11 +62,47 @@ public class LinkMatrix {
 	}
 	
 	private void cover(int colIdx) {
+		LinkHeader  colHeader = mColLinks[colIdx];
+		LinkNode   colNode = colHeader.down();
+		
+		colHeader.left().right(colHeader.right());
+		colHeader.right().left(colHeader.left());
+		
+		while( null != colNode ){
+			LinkHeader rowHeader = mRowLinks[colNode.row()];
+			LinkNode   rowNode = rowHeader;
+			
+			while( null != rowNode ){				
+				rowNode.up().down(rowNode.down());
+				rowNode.down().up(rowNode.up());
+				mColLinks[rowNode.col()].decreaseSize();
+				rowNode = rowNode.right();
+			}
+			
+			colNode = colNode.down();
+		}
 		
 	}
 	
 	private void uncover(int colIdx) {
+		LinkHeader  colHeader = mColLinks[colIdx];
+		LinkNode   colNode = colHeader.down();
 		
+		while( null != colNode ) {
+			LinkHeader rowHeader = mRowLinks[colNode.row()];
+			LinkNode   rowNode = rowHeader;
+			
+			while( null != rowNode ){
+				mColLinks[rowNode.col()].increaseSize();
+				rowNode.down().up(rowNode);
+				rowNode.up().down(rowNode);
+				rowNode = rowNode.right();
+			}
+			
+			colNode = colNode.down();
+		}
+		colHeader.right().left(colHeader);
+		colHeader.left().right(colHeader);
 	}
 	
 	public static boolean Test() {
